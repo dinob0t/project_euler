@@ -1,7 +1,4 @@
-                                                                     
-                                                                     
-                                                                     
-                                             
+                                                                                                                                                                                                                                          
 import math
 
 def tri_num_div_over(div):
@@ -23,6 +20,7 @@ def number_divisors(num):
 			divisors = divisors + 1
 	return divisors*2 + 2
 
-print tri_num_div_over(500)
+if __name__ == "__main__":
+	print tri_num_div_over(500)
 
 
