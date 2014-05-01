@@ -27,7 +27,7 @@ def consecutive_primes(a_lim, b_lim):
 	return best_a*best_b
 
 def isprime(n):
-	if n<0:
+	if n<=0:
 		return False
 	if n==1:
 		return True
