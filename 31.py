@@ -1,75 +1,44 @@
-
-def ways_to_split_amount(in_list):
-	#pounds amount in cents
-
-	combinations =1
-	split_list = in_list[:]
-
-	while True:
-		next_term = 0
-		for i in range(len(split_list)-1, -1, -1):
-			if split_list[i] != 1:
-				next_term = i
-				break
-		if split_list[i] == 1:
-			break
-
-		if split_list[next_term] == 200:
-			split_list.pop(next_term)
-			split_list.append(100)
-			split_list.append(100)
-		elif split_list[next_term] == 100:
-			split_list.pop(next_term)
-			split_list.append(50)
-			split_list.append(50)
-		elif split_list[next_term] == 50:
-			split_list.pop(next_term)
-			split_list.append(20)
-			split_list.append(10)
-			split_list.append(10)
-			split_list.append(10)
-			combinations = combinations + ways_to_split_amount(split_list)
-			split_list.pop(len(split_list)-1)
-			split_list.pop(len(split_list)-1)
-			split_list.pop(len(split_list)-1)
-			split_list.append(20)
-			split_list.append(10)
-		elif split_list[next_term] == 20:
-			split_list.pop(next_term)
-			split_list.append(10)
-			split_list.append(10)
-		elif split_list[next_term] == 10:
-			split_list.pop(next_term)
-			split_list.append(5)
-			split_list.append(5)
-		elif split_list[next_term] == 5:
-			split_list.pop(next_term)
-			split_list.append(2)
-			split_list.append(1)
-			split_list.append(1)
-			split_list.append(1)
-			combinations = combinations + ways_to_split_amount(split_list)
-			split_list.pop(len(split_list)-1)
-			split_list.pop(len(split_list)-1)
-			split_list.pop(len(split_list)-1)
-			split_list.append(2)
-			split_list.append(1)
-
-		elif split_list[next_term] == 2:
-			split_list.pop(next_term)
-			split_list.append(1)
-			split_list.append(1)
-			
-		combinations = combinations +1
-		# if sum(split_list) != 200:
-		# 	print split_list, combinations, sum(split_list)
-		#print split_list, combinations, next_term, len(split_list), split_list[next_term]
+import math
 
 
+def ways_to_split_amount(target, coins):
 
-	return combinations
+	matrix = {}
+	for y in xrange(0, target+1):
+	    # There is only one way to form a target sum N
+	    # via 1-cent coins: use N 1-cents!
+	    matrix[y, 0] = 1  # equivalent to matrix[(y,0)]=1
+
+	for y in xrange(0, target+1):
+	    print y, ":", 1,
+	    for x in xrange(1, len(coins)):
+	        matrix[y, x] = 0
+	        # Is the target big enough to accomodate coins[x]?
+	        if y>=coins[x]:
+	            # If yes, then the number of ways to form
+	            # the target sum are obtained via:
+	            #
+	            # (a) the number of ways to form this target
+	            #     using ONLY coins less than column x
+	            #     i.e. matrix[y][x-1]
+	            matrix[y, x] += matrix[y, x-1]
+	            # plus
+	            # (b) the number of ways to form this target
+	            #     when USING the coin of column x
+	            #     which means for a remainder of y-coins[x]
+	            #     i.e. matrix[y-coins[x]][x]
+	            matrix[y, x] += matrix[y-coins[x], x]
+	        else:
+	            # if the target is not big enough to allow
+	            # usage of the coin in column x,
+	            # then just copy the number of ways from the
+	            # column to the left (i.e. with smaller coins)
+	            matrix[y, x] = matrix[y, x-1]
+	        print matrix[y, x],
+	    print
+
 
 if __name__ == "__main__":
-	start = []
-	start.append(10)
-	print ways_to_split_amount(start)
+	coins = [1, 2, 5, 10, 20, 50, 100, 200]
+	target=200
+	ways_to_split_amount(target,coins)
