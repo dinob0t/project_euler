@@ -2,15 +2,15 @@ import itertools
 import math
 
 def pandigitals(n):
-	pan_digit_prods = []
+	pans = []
 	perms = (itertools.permutations(range(1,n+1),n))
 	for perm in perms:
 		current = int("".join(map(str,list(perm))))
 		
 		if isprime(current):
-			print current
+			pans.append(current)
 
-	return 0
+	return pans
 
 def isprime(n):
 	if n<=0:
